@@ -1,0 +1,105 @@
+// Fonts
+@import url('https://fonts.googleapis.com/css?family=Nunito');
+
+// Variables
+@import 'variables';
+
+// Bootstrap
+@import '~bootstrap/scss/bootstrap';
+
+
+
+/* aca  */
+
+a:link,
+a:visited,
+a:hover,
+a:active {
+	color: rgba(0, 0, 16, 0.8);
+	text-decoration: none;
+}
+
+a:hover,
+a:active {
+	border-bottom: 0.1em solid rgba(0, 0, 16, 0.8);
+	color: rgba(0, 0, 16, 0.8);
+	text-decoration: none;
+}
+
+span {
+	color: rgba(0, 0, 16, 0.4);
+	font-size: 70%;
+}
+
+.rating-container {
+	display: -webkit-box;
+	display: -ms-flexbox;
+	display: flex;
+	-webkit-box-pack: justify;
+	-ms-flex-pack: justify;
+	justify-content: space-between;
+	padding: 0.4rem 0.8rem;
+	width: 100%;
+}
+
+.rating-text p {
+	color: rgba(0, 0, 16, 0.8);
+	font-size: 1.3rem;
+	padding: 0.3rem;
+}
+
+.rating {
+	background-color: rgba(0, 0, 16, 0.8);
+	padding: 0.4rem 0.4rem 0.1rem 0.4rem;
+	border-radius: 2.2rem;
+}
+
+svg {
+	fill: rgb(0,0,0);
+	height: 3.6rem;
+	width: 3.6rem;
+	margin: 0.2rem;
+}
+
+.rating-form-2 svg {
+	height: 3rem;
+	width: 3rem;
+	margin: 0.5rem;
+}
+
+#radios label {
+	position: relative;
+}
+
+input[type="checkbox"] {
+	position: absolute;
+	opacity: 0;
+}
+
+input[type="checkbox"] + svg {
+	-webkit-transition: all 0.2s;
+	transition: all 0.2s;
+}
+
+input + svg {
+	cursor: pointer;
+}
+
+input[class="super-happy"]:hover + svg,
+input[class="super-happy"]:checked + svg,
+input[class="super-happy"]:focus + svg {
+	fill: rgb(0, 109, 217);
+}
+
+input[class="super-happy"]:disabled + svg {
+	fill: red;
+}
+
+.asiento{
+    height:25px;
+    width:25px;
+    @media (min-width: 768px) {
+        height:50px;
+        width:50px;
+    }
+}
