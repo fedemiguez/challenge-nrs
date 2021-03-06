@@ -86,6 +86,18 @@
 /************************************************************************/
 /******/ ({
 
+/***/ "./node_modules/@babel/runtime/regenerator/index.js":
+/*!**********************************************************!*\
+  !*** ./node_modules/@babel/runtime/regenerator/index.js ***!
+  \**********************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+module.exports = __webpack_require__(/*! regenerator-runtime */ "./node_modules/regenerator-runtime/runtime.js");
+
+
+/***/ }),
+
 /***/ "./node_modules/axios/index.js":
 /*!*************************************!*\
   !*** ./node_modules/axios/index.js ***!
@@ -1924,6 +1936,17 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
   components: {
@@ -1942,6 +1965,16 @@ __webpack_require__.r(__webpack_exports__);
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @babel/runtime/regenerator */ "./node_modules/@babel/runtime/regenerator/index.js");
+/* harmony import */ var _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! axios */ "./node_modules/axios/index.js");
+/* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(axios__WEBPACK_IMPORTED_MODULE_1__);
+
+
+function asyncGeneratorStep(gen, resolve, reject, _next, _throw, key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { Promise.resolve(value).then(_next, _throw); } }
+
+function _asyncToGenerator(fn) { return function () { var self = this, args = arguments; return new Promise(function (resolve, reject) { var gen = fn.apply(self, args); function _next(value) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "next", value); } function _throw(err) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "throw", err); } _next(undefined); }); }; }
+
 //
 //
 //
@@ -1982,14 +2015,139 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+
 /* harmony default export */ __webpack_exports__["default"] = ({
   name: 'reserva',
   data: function data() {
     return {
       filas: 5,
       columnas: 10,
-      butacas: []
+      verButacas: false,
+      butacasReservadas: [],
+      reserva: {
+        nombre: '',
+        apellido: '',
+        cantidad: '',
+        fecha: '',
+        butacas: []
+      }
     };
+  },
+  methods: {
+    buscarAsientos: function () {
+      var _buscarAsientos = _asyncToGenerator( /*#__PURE__*/_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.mark(function _callee() {
+        var me, url, response, respuesta;
+        return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.wrap(function _callee$(_context) {
+          while (1) {
+            switch (_context.prev = _context.next) {
+              case 0:
+                me = this;
+                url = "/buscarAsientos?fecha=".concat(me.reserva.fecha, "&cantidad=").concat(me.reserva.cantidad);
+                _context.prev = 2;
+                _context.next = 5;
+                return axios.get(url);
+
+              case 5:
+                response = _context.sent;
+                respuesta = response.data;
+                respuesta.reservas.forEach(function (reserva) {
+                  reserva.butacas.forEach(function (butaca) {
+                    me.butacasReservadas.push("".concat(butaca.columna, "-").concat(butaca.fila));
+                  });
+                });
+                me.verButacas = true;
+                _context.next = 14;
+                break;
+
+              case 11:
+                _context.prev = 11;
+                _context.t0 = _context["catch"](2);
+                this.printError(_context.t0);
+
+              case 14:
+                ;
+                return _context.abrupt("return", this.availabilityMessage);
+
+              case 16:
+              case "end":
+                return _context.stop();
+            }
+          }
+        }, _callee, this, [[2, 11]]);
+      }));
+
+      function buscarAsientos() {
+        return _buscarAsientos.apply(this, arguments);
+      }
+
+      return buscarAsientos;
+    }(),
+    guardarReserva: function () {
+      var _guardarReserva = _asyncToGenerator( /*#__PURE__*/_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.mark(function _callee2() {
+        var me, url, response;
+        return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.wrap(function _callee2$(_context2) {
+          while (1) {
+            switch (_context2.prev = _context2.next) {
+              case 0:
+                me = this;
+                url = "/reserva";
+                _context2.prev = 2;
+                _context2.next = 5;
+                return axios.post(url, {
+                  'nombre': this.reserva.nombre,
+                  'apellido': this.reserva.apellido,
+                  'cantidad': this.reserva.cantidad,
+                  'fecha_reserva': this.reserva.fecha,
+                  'butacas': this.reserva.butacas
+                });
+
+              case 5:
+                response = _context2.sent;
+                alert('Reserva realizada con exito');
+                this.limpiarCampos();
+                _context2.next = 13;
+                break;
+
+              case 10:
+                _context2.prev = 10;
+                _context2.t0 = _context2["catch"](2);
+                this.printError(_context2.t0);
+
+              case 13:
+              case "end":
+                return _context2.stop();
+            }
+          }
+        }, _callee2, this, [[2, 10]]);
+      }));
+
+      function guardarReserva() {
+        return _guardarReserva.apply(this, arguments);
+      }
+
+      return guardarReserva;
+    }(),
+    findArray: function findArray(arr, value) {
+      var res = arr.find(function (element) {
+        return element === value;
+      });
+      return res;
+    },
+    printError: function printError(error) {
+      var errors = Object.values(error.response.data.errors);
+      errors.forEach(function (element) {
+        alert(element);
+      });
+    },
+    limpiarCampos: function limpiarCampos() {
+      this.verButacas = false, this.butacasReservadas = [], this.reserva = {
+        nombre: '',
+        apellido: '',
+        cantidad: '',
+        fecha: '',
+        butacas: []
+      };
+    }
   }
 });
 
@@ -37368,6 +37526,765 @@ process.umask = function() { return 0; };
 
 /***/ }),
 
+/***/ "./node_modules/regenerator-runtime/runtime.js":
+/*!*****************************************************!*\
+  !*** ./node_modules/regenerator-runtime/runtime.js ***!
+  \*****************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+/**
+ * Copyright (c) 2014-present, Facebook, Inc.
+ *
+ * This source code is licensed under the MIT license found in the
+ * LICENSE file in the root directory of this source tree.
+ */
+
+var runtime = (function (exports) {
+  "use strict";
+
+  var Op = Object.prototype;
+  var hasOwn = Op.hasOwnProperty;
+  var undefined; // More compressible than void 0.
+  var $Symbol = typeof Symbol === "function" ? Symbol : {};
+  var iteratorSymbol = $Symbol.iterator || "@@iterator";
+  var asyncIteratorSymbol = $Symbol.asyncIterator || "@@asyncIterator";
+  var toStringTagSymbol = $Symbol.toStringTag || "@@toStringTag";
+
+  function define(obj, key, value) {
+    Object.defineProperty(obj, key, {
+      value: value,
+      enumerable: true,
+      configurable: true,
+      writable: true
+    });
+    return obj[key];
+  }
+  try {
+    // IE 8 has a broken Object.defineProperty that only works on DOM objects.
+    define({}, "");
+  } catch (err) {
+    define = function(obj, key, value) {
+      return obj[key] = value;
+    };
+  }
+
+  function wrap(innerFn, outerFn, self, tryLocsList) {
+    // If outerFn provided and outerFn.prototype is a Generator, then outerFn.prototype instanceof Generator.
+    var protoGenerator = outerFn && outerFn.prototype instanceof Generator ? outerFn : Generator;
+    var generator = Object.create(protoGenerator.prototype);
+    var context = new Context(tryLocsList || []);
+
+    // The ._invoke method unifies the implementations of the .next,
+    // .throw, and .return methods.
+    generator._invoke = makeInvokeMethod(innerFn, self, context);
+
+    return generator;
+  }
+  exports.wrap = wrap;
+
+  // Try/catch helper to minimize deoptimizations. Returns a completion
+  // record like context.tryEntries[i].completion. This interface could
+  // have been (and was previously) designed to take a closure to be
+  // invoked without arguments, but in all the cases we care about we
+  // already have an existing method we want to call, so there's no need
+  // to create a new function object. We can even get away with assuming
+  // the method takes exactly one argument, since that happens to be true
+  // in every case, so we don't have to touch the arguments object. The
+  // only additional allocation required is the completion record, which
+  // has a stable shape and so hopefully should be cheap to allocate.
+  function tryCatch(fn, obj, arg) {
+    try {
+      return { type: "normal", arg: fn.call(obj, arg) };
+    } catch (err) {
+      return { type: "throw", arg: err };
+    }
+  }
+
+  var GenStateSuspendedStart = "suspendedStart";
+  var GenStateSuspendedYield = "suspendedYield";
+  var GenStateExecuting = "executing";
+  var GenStateCompleted = "completed";
+
+  // Returning this object from the innerFn has the same effect as
+  // breaking out of the dispatch switch statement.
+  var ContinueSentinel = {};
+
+  // Dummy constructor functions that we use as the .constructor and
+  // .constructor.prototype properties for functions that return Generator
+  // objects. For full spec compliance, you may wish to configure your
+  // minifier not to mangle the names of these two functions.
+  function Generator() {}
+  function GeneratorFunction() {}
+  function GeneratorFunctionPrototype() {}
+
+  // This is a polyfill for %IteratorPrototype% for environments that
+  // don't natively support it.
+  var IteratorPrototype = {};
+  IteratorPrototype[iteratorSymbol] = function () {
+    return this;
+  };
+
+  var getProto = Object.getPrototypeOf;
+  var NativeIteratorPrototype = getProto && getProto(getProto(values([])));
+  if (NativeIteratorPrototype &&
+      NativeIteratorPrototype !== Op &&
+      hasOwn.call(NativeIteratorPrototype, iteratorSymbol)) {
+    // This environment has a native %IteratorPrototype%; use it instead
+    // of the polyfill.
+    IteratorPrototype = NativeIteratorPrototype;
+  }
+
+  var Gp = GeneratorFunctionPrototype.prototype =
+    Generator.prototype = Object.create(IteratorPrototype);
+  GeneratorFunction.prototype = Gp.constructor = GeneratorFunctionPrototype;
+  GeneratorFunctionPrototype.constructor = GeneratorFunction;
+  GeneratorFunction.displayName = define(
+    GeneratorFunctionPrototype,
+    toStringTagSymbol,
+    "GeneratorFunction"
+  );
+
+  // Helper for defining the .next, .throw, and .return methods of the
+  // Iterator interface in terms of a single ._invoke method.
+  function defineIteratorMethods(prototype) {
+    ["next", "throw", "return"].forEach(function(method) {
+      define(prototype, method, function(arg) {
+        return this._invoke(method, arg);
+      });
+    });
+  }
+
+  exports.isGeneratorFunction = function(genFun) {
+    var ctor = typeof genFun === "function" && genFun.constructor;
+    return ctor
+      ? ctor === GeneratorFunction ||
+        // For the native GeneratorFunction constructor, the best we can
+        // do is to check its .name property.
+        (ctor.displayName || ctor.name) === "GeneratorFunction"
+      : false;
+  };
+
+  exports.mark = function(genFun) {
+    if (Object.setPrototypeOf) {
+      Object.setPrototypeOf(genFun, GeneratorFunctionPrototype);
+    } else {
+      genFun.__proto__ = GeneratorFunctionPrototype;
+      define(genFun, toStringTagSymbol, "GeneratorFunction");
+    }
+    genFun.prototype = Object.create(Gp);
+    return genFun;
+  };
+
+  // Within the body of any async function, `await x` is transformed to
+  // `yield regeneratorRuntime.awrap(x)`, so that the runtime can test
+  // `hasOwn.call(value, "__await")` to determine if the yielded value is
+  // meant to be awaited.
+  exports.awrap = function(arg) {
+    return { __await: arg };
+  };
+
+  function AsyncIterator(generator, PromiseImpl) {
+    function invoke(method, arg, resolve, reject) {
+      var record = tryCatch(generator[method], generator, arg);
+      if (record.type === "throw") {
+        reject(record.arg);
+      } else {
+        var result = record.arg;
+        var value = result.value;
+        if (value &&
+            typeof value === "object" &&
+            hasOwn.call(value, "__await")) {
+          return PromiseImpl.resolve(value.__await).then(function(value) {
+            invoke("next", value, resolve, reject);
+          }, function(err) {
+            invoke("throw", err, resolve, reject);
+          });
+        }
+
+        return PromiseImpl.resolve(value).then(function(unwrapped) {
+          // When a yielded Promise is resolved, its final value becomes
+          // the .value of the Promise<{value,done}> result for the
+          // current iteration.
+          result.value = unwrapped;
+          resolve(result);
+        }, function(error) {
+          // If a rejected Promise was yielded, throw the rejection back
+          // into the async generator function so it can be handled there.
+          return invoke("throw", error, resolve, reject);
+        });
+      }
+    }
+
+    var previousPromise;
+
+    function enqueue(method, arg) {
+      function callInvokeWithMethodAndArg() {
+        return new PromiseImpl(function(resolve, reject) {
+          invoke(method, arg, resolve, reject);
+        });
+      }
+
+      return previousPromise =
+        // If enqueue has been called before, then we want to wait until
+        // all previous Promises have been resolved before calling invoke,
+        // so that results are always delivered in the correct order. If
+        // enqueue has not been called before, then it is important to
+        // call invoke immediately, without waiting on a callback to fire,
+        // so that the async generator function has the opportunity to do
+        // any necessary setup in a predictable way. This predictability
+        // is why the Promise constructor synchronously invokes its
+        // executor callback, and why async functions synchronously
+        // execute code before the first await. Since we implement simple
+        // async functions in terms of async generators, it is especially
+        // important to get this right, even though it requires care.
+        previousPromise ? previousPromise.then(
+          callInvokeWithMethodAndArg,
+          // Avoid propagating failures to Promises returned by later
+          // invocations of the iterator.
+          callInvokeWithMethodAndArg
+        ) : callInvokeWithMethodAndArg();
+    }
+
+    // Define the unified helper method that is used to implement .next,
+    // .throw, and .return (see defineIteratorMethods).
+    this._invoke = enqueue;
+  }
+
+  defineIteratorMethods(AsyncIterator.prototype);
+  AsyncIterator.prototype[asyncIteratorSymbol] = function () {
+    return this;
+  };
+  exports.AsyncIterator = AsyncIterator;
+
+  // Note that simple async functions are implemented on top of
+  // AsyncIterator objects; they just return a Promise for the value of
+  // the final result produced by the iterator.
+  exports.async = function(innerFn, outerFn, self, tryLocsList, PromiseImpl) {
+    if (PromiseImpl === void 0) PromiseImpl = Promise;
+
+    var iter = new AsyncIterator(
+      wrap(innerFn, outerFn, self, tryLocsList),
+      PromiseImpl
+    );
+
+    return exports.isGeneratorFunction(outerFn)
+      ? iter // If outerFn is a generator, return the full iterator.
+      : iter.next().then(function(result) {
+          return result.done ? result.value : iter.next();
+        });
+  };
+
+  function makeInvokeMethod(innerFn, self, context) {
+    var state = GenStateSuspendedStart;
+
+    return function invoke(method, arg) {
+      if (state === GenStateExecuting) {
+        throw new Error("Generator is already running");
+      }
+
+      if (state === GenStateCompleted) {
+        if (method === "throw") {
+          throw arg;
+        }
+
+        // Be forgiving, per 25.3.3.3.3 of the spec:
+        // https://people.mozilla.org/~jorendorff/es6-draft.html#sec-generatorresume
+        return doneResult();
+      }
+
+      context.method = method;
+      context.arg = arg;
+
+      while (true) {
+        var delegate = context.delegate;
+        if (delegate) {
+          var delegateResult = maybeInvokeDelegate(delegate, context);
+          if (delegateResult) {
+            if (delegateResult === ContinueSentinel) continue;
+            return delegateResult;
+          }
+        }
+
+        if (context.method === "next") {
+          // Setting context._sent for legacy support of Babel's
+          // function.sent implementation.
+          context.sent = context._sent = context.arg;
+
+        } else if (context.method === "throw") {
+          if (state === GenStateSuspendedStart) {
+            state = GenStateCompleted;
+            throw context.arg;
+          }
+
+          context.dispatchException(context.arg);
+
+        } else if (context.method === "return") {
+          context.abrupt("return", context.arg);
+        }
+
+        state = GenStateExecuting;
+
+        var record = tryCatch(innerFn, self, context);
+        if (record.type === "normal") {
+          // If an exception is thrown from innerFn, we leave state ===
+          // GenStateExecuting and loop back for another invocation.
+          state = context.done
+            ? GenStateCompleted
+            : GenStateSuspendedYield;
+
+          if (record.arg === ContinueSentinel) {
+            continue;
+          }
+
+          return {
+            value: record.arg,
+            done: context.done
+          };
+
+        } else if (record.type === "throw") {
+          state = GenStateCompleted;
+          // Dispatch the exception by looping back around to the
+          // context.dispatchException(context.arg) call above.
+          context.method = "throw";
+          context.arg = record.arg;
+        }
+      }
+    };
+  }
+
+  // Call delegate.iterator[context.method](context.arg) and handle the
+  // result, either by returning a { value, done } result from the
+  // delegate iterator, or by modifying context.method and context.arg,
+  // setting context.delegate to null, and returning the ContinueSentinel.
+  function maybeInvokeDelegate(delegate, context) {
+    var method = delegate.iterator[context.method];
+    if (method === undefined) {
+      // A .throw or .return when the delegate iterator has no .throw
+      // method always terminates the yield* loop.
+      context.delegate = null;
+
+      if (context.method === "throw") {
+        // Note: ["return"] must be used for ES3 parsing compatibility.
+        if (delegate.iterator["return"]) {
+          // If the delegate iterator has a return method, give it a
+          // chance to clean up.
+          context.method = "return";
+          context.arg = undefined;
+          maybeInvokeDelegate(delegate, context);
+
+          if (context.method === "throw") {
+            // If maybeInvokeDelegate(context) changed context.method from
+            // "return" to "throw", let that override the TypeError below.
+            return ContinueSentinel;
+          }
+        }
+
+        context.method = "throw";
+        context.arg = new TypeError(
+          "The iterator does not provide a 'throw' method");
+      }
+
+      return ContinueSentinel;
+    }
+
+    var record = tryCatch(method, delegate.iterator, context.arg);
+
+    if (record.type === "throw") {
+      context.method = "throw";
+      context.arg = record.arg;
+      context.delegate = null;
+      return ContinueSentinel;
+    }
+
+    var info = record.arg;
+
+    if (! info) {
+      context.method = "throw";
+      context.arg = new TypeError("iterator result is not an object");
+      context.delegate = null;
+      return ContinueSentinel;
+    }
+
+    if (info.done) {
+      // Assign the result of the finished delegate to the temporary
+      // variable specified by delegate.resultName (see delegateYield).
+      context[delegate.resultName] = info.value;
+
+      // Resume execution at the desired location (see delegateYield).
+      context.next = delegate.nextLoc;
+
+      // If context.method was "throw" but the delegate handled the
+      // exception, let the outer generator proceed normally. If
+      // context.method was "next", forget context.arg since it has been
+      // "consumed" by the delegate iterator. If context.method was
+      // "return", allow the original .return call to continue in the
+      // outer generator.
+      if (context.method !== "return") {
+        context.method = "next";
+        context.arg = undefined;
+      }
+
+    } else {
+      // Re-yield the result returned by the delegate method.
+      return info;
+    }
+
+    // The delegate iterator is finished, so forget it and continue with
+    // the outer generator.
+    context.delegate = null;
+    return ContinueSentinel;
+  }
+
+  // Define Generator.prototype.{next,throw,return} in terms of the
+  // unified ._invoke helper method.
+  defineIteratorMethods(Gp);
+
+  define(Gp, toStringTagSymbol, "Generator");
+
+  // A Generator should always return itself as the iterator object when the
+  // @@iterator function is called on it. Some browsers' implementations of the
+  // iterator prototype chain incorrectly implement this, causing the Generator
+  // object to not be returned from this call. This ensures that doesn't happen.
+  // See https://github.com/facebook/regenerator/issues/274 for more details.
+  Gp[iteratorSymbol] = function() {
+    return this;
+  };
+
+  Gp.toString = function() {
+    return "[object Generator]";
+  };
+
+  function pushTryEntry(locs) {
+    var entry = { tryLoc: locs[0] };
+
+    if (1 in locs) {
+      entry.catchLoc = locs[1];
+    }
+
+    if (2 in locs) {
+      entry.finallyLoc = locs[2];
+      entry.afterLoc = locs[3];
+    }
+
+    this.tryEntries.push(entry);
+  }
+
+  function resetTryEntry(entry) {
+    var record = entry.completion || {};
+    record.type = "normal";
+    delete record.arg;
+    entry.completion = record;
+  }
+
+  function Context(tryLocsList) {
+    // The root entry object (effectively a try statement without a catch
+    // or a finally block) gives us a place to store values thrown from
+    // locations where there is no enclosing try statement.
+    this.tryEntries = [{ tryLoc: "root" }];
+    tryLocsList.forEach(pushTryEntry, this);
+    this.reset(true);
+  }
+
+  exports.keys = function(object) {
+    var keys = [];
+    for (var key in object) {
+      keys.push(key);
+    }
+    keys.reverse();
+
+    // Rather than returning an object with a next method, we keep
+    // things simple and return the next function itself.
+    return function next() {
+      while (keys.length) {
+        var key = keys.pop();
+        if (key in object) {
+          next.value = key;
+          next.done = false;
+          return next;
+        }
+      }
+
+      // To avoid creating an additional object, we just hang the .value
+      // and .done properties off the next function object itself. This
+      // also ensures that the minifier will not anonymize the function.
+      next.done = true;
+      return next;
+    };
+  };
+
+  function values(iterable) {
+    if (iterable) {
+      var iteratorMethod = iterable[iteratorSymbol];
+      if (iteratorMethod) {
+        return iteratorMethod.call(iterable);
+      }
+
+      if (typeof iterable.next === "function") {
+        return iterable;
+      }
+
+      if (!isNaN(iterable.length)) {
+        var i = -1, next = function next() {
+          while (++i < iterable.length) {
+            if (hasOwn.call(iterable, i)) {
+              next.value = iterable[i];
+              next.done = false;
+              return next;
+            }
+          }
+
+          next.value = undefined;
+          next.done = true;
+
+          return next;
+        };
+
+        return next.next = next;
+      }
+    }
+
+    // Return an iterator with no values.
+    return { next: doneResult };
+  }
+  exports.values = values;
+
+  function doneResult() {
+    return { value: undefined, done: true };
+  }
+
+  Context.prototype = {
+    constructor: Context,
+
+    reset: function(skipTempReset) {
+      this.prev = 0;
+      this.next = 0;
+      // Resetting context._sent for legacy support of Babel's
+      // function.sent implementation.
+      this.sent = this._sent = undefined;
+      this.done = false;
+      this.delegate = null;
+
+      this.method = "next";
+      this.arg = undefined;
+
+      this.tryEntries.forEach(resetTryEntry);
+
+      if (!skipTempReset) {
+        for (var name in this) {
+          // Not sure about the optimal order of these conditions:
+          if (name.charAt(0) === "t" &&
+              hasOwn.call(this, name) &&
+              !isNaN(+name.slice(1))) {
+            this[name] = undefined;
+          }
+        }
+      }
+    },
+
+    stop: function() {
+      this.done = true;
+
+      var rootEntry = this.tryEntries[0];
+      var rootRecord = rootEntry.completion;
+      if (rootRecord.type === "throw") {
+        throw rootRecord.arg;
+      }
+
+      return this.rval;
+    },
+
+    dispatchException: function(exception) {
+      if (this.done) {
+        throw exception;
+      }
+
+      var context = this;
+      function handle(loc, caught) {
+        record.type = "throw";
+        record.arg = exception;
+        context.next = loc;
+
+        if (caught) {
+          // If the dispatched exception was caught by a catch block,
+          // then let that catch block handle the exception normally.
+          context.method = "next";
+          context.arg = undefined;
+        }
+
+        return !! caught;
+      }
+
+      for (var i = this.tryEntries.length - 1; i >= 0; --i) {
+        var entry = this.tryEntries[i];
+        var record = entry.completion;
+
+        if (entry.tryLoc === "root") {
+          // Exception thrown outside of any try block that could handle
+          // it, so set the completion value of the entire function to
+          // throw the exception.
+          return handle("end");
+        }
+
+        if (entry.tryLoc <= this.prev) {
+          var hasCatch = hasOwn.call(entry, "catchLoc");
+          var hasFinally = hasOwn.call(entry, "finallyLoc");
+
+          if (hasCatch && hasFinally) {
+            if (this.prev < entry.catchLoc) {
+              return handle(entry.catchLoc, true);
+            } else if (this.prev < entry.finallyLoc) {
+              return handle(entry.finallyLoc);
+            }
+
+          } else if (hasCatch) {
+            if (this.prev < entry.catchLoc) {
+              return handle(entry.catchLoc, true);
+            }
+
+          } else if (hasFinally) {
+            if (this.prev < entry.finallyLoc) {
+              return handle(entry.finallyLoc);
+            }
+
+          } else {
+            throw new Error("try statement without catch or finally");
+          }
+        }
+      }
+    },
+
+    abrupt: function(type, arg) {
+      for (var i = this.tryEntries.length - 1; i >= 0; --i) {
+        var entry = this.tryEntries[i];
+        if (entry.tryLoc <= this.prev &&
+            hasOwn.call(entry, "finallyLoc") &&
+            this.prev < entry.finallyLoc) {
+          var finallyEntry = entry;
+          break;
+        }
+      }
+
+      if (finallyEntry &&
+          (type === "break" ||
+           type === "continue") &&
+          finallyEntry.tryLoc <= arg &&
+          arg <= finallyEntry.finallyLoc) {
+        // Ignore the finally entry if control is not jumping to a
+        // location outside the try/catch block.
+        finallyEntry = null;
+      }
+
+      var record = finallyEntry ? finallyEntry.completion : {};
+      record.type = type;
+      record.arg = arg;
+
+      if (finallyEntry) {
+        this.method = "next";
+        this.next = finallyEntry.finallyLoc;
+        return ContinueSentinel;
+      }
+
+      return this.complete(record);
+    },
+
+    complete: function(record, afterLoc) {
+      if (record.type === "throw") {
+        throw record.arg;
+      }
+
+      if (record.type === "break" ||
+          record.type === "continue") {
+        this.next = record.arg;
+      } else if (record.type === "return") {
+        this.rval = this.arg = record.arg;
+        this.method = "return";
+        this.next = "end";
+      } else if (record.type === "normal" && afterLoc) {
+        this.next = afterLoc;
+      }
+
+      return ContinueSentinel;
+    },
+
+    finish: function(finallyLoc) {
+      for (var i = this.tryEntries.length - 1; i >= 0; --i) {
+        var entry = this.tryEntries[i];
+        if (entry.finallyLoc === finallyLoc) {
+          this.complete(entry.completion, entry.afterLoc);
+          resetTryEntry(entry);
+          return ContinueSentinel;
+        }
+      }
+    },
+
+    "catch": function(tryLoc) {
+      for (var i = this.tryEntries.length - 1; i >= 0; --i) {
+        var entry = this.tryEntries[i];
+        if (entry.tryLoc === tryLoc) {
+          var record = entry.completion;
+          if (record.type === "throw") {
+            var thrown = record.arg;
+            resetTryEntry(entry);
+          }
+          return thrown;
+        }
+      }
+
+      // The context.catch method must only be called with a location
+      // argument that corresponds to a known catch block.
+      throw new Error("illegal catch attempt");
+    },
+
+    delegateYield: function(iterable, resultName, nextLoc) {
+      this.delegate = {
+        iterator: values(iterable),
+        resultName: resultName,
+        nextLoc: nextLoc
+      };
+
+      if (this.method === "next") {
+        // Deliberately forget the last sent value so that we don't
+        // accidentally pass it on to the delegate.
+        this.arg = undefined;
+      }
+
+      return ContinueSentinel;
+    }
+  };
+
+  // Regardless of whether this script is executing as a CommonJS module
+  // or not, return the runtime object so that we can declare the variable
+  // regeneratorRuntime in the outer scope, which allows this module to be
+  // injected easily by `bin/regenerator --include-runtime script.js`.
+  return exports;
+
+}(
+  // If this script is executing as a CommonJS module, use module.exports
+  // as the regeneratorRuntime namespace. Otherwise create a new empty
+  // object. Either way, the resulting object will be used to initialize
+  // the regeneratorRuntime variable at the top of this file.
+   true ? module.exports : undefined
+));
+
+try {
+  regeneratorRuntime = runtime;
+} catch (accidentalStrictMode) {
+  // This module should not be running in strict mode, so the above
+  // assignment should always work unless something is misconfigured. Just
+  // in case runtime.js accidentally runs in strict mode, we can escape
+  // strict mode using a global Function call. This could conceivably fail
+  // if a Content Security Policy forbids using Function, but in that case
+  // the proper solution is to fix the accidental strict mode problem. If
+  // you've misconfigured your bundler to force strict mode and applied a
+  // CSP to forbid Function, and you're not willing to fix either of those
+  // problems, please detail your unique predicament in a GitHub issue.
+  Function("r", "regeneratorRuntime = r")(runtime);
+}
+
+
+/***/ }),
+
 /***/ "./node_modules/setimmediate/setImmediate.js":
 /*!***************************************************!*\
   !*** ./node_modules/setimmediate/setImmediate.js ***!
@@ -37660,9 +38577,7 @@ var render = function() {
     _c("div", { staticClass: "row justify-content-center" }, [
       _c("div", { staticClass: "col-md-12" }, [
         _c("div", { staticClass: "card" }, [
-          _c("div", { staticClass: "card-header" }, [
-            _vm._v("Reserva tu Butaca Para el Teatro")
-          ]),
+          _vm._m(0),
           _vm._v(" "),
           _c("div", { staticClass: "card-body" }, [_c("reserva")], 1)
         ])
@@ -37670,7 +38585,30 @@ var render = function() {
     ])
   ])
 }
-var staticRenderFns = []
+var staticRenderFns = [
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "card-header" }, [
+      _c("div", { staticClass: "row" }, [
+        _c("div", { staticClass: "col-8 mt-2" }, [
+          _vm._v(
+            "\n                            Reserva tu Butaca Para el Teatro\n                        "
+          )
+        ]),
+        _vm._v(" "),
+        _c("div", { staticClass: "col-4" }, [
+          _c("button", { staticClass: "btn btn-success  float-right" }, [
+            _vm._v(
+              "\n                                Ver Reservas\n                            "
+            )
+          ])
+        ])
+      ])
+    ])
+  }
+]
 render._withStripped = true
 
 
@@ -37704,18 +38642,18 @@ var render = function() {
             {
               name: "model",
               rawName: "v-model",
-              value: _vm.nombre,
-              expression: "nombre"
+              value: _vm.reserva.nombre,
+              expression: "reserva.nombre"
             }
           ],
           attrs: { type: "text" },
-          domProps: { value: _vm.nombre },
+          domProps: { value: _vm.reserva.nombre },
           on: {
             input: function($event) {
               if ($event.target.composing) {
                 return
               }
-              _vm.nombre = $event.target.value
+              _vm.$set(_vm.reserva, "nombre", $event.target.value)
             }
           }
         })
@@ -37729,18 +38667,18 @@ var render = function() {
             {
               name: "model",
               rawName: "v-model",
-              value: _vm.apellido,
-              expression: "apellido"
+              value: _vm.reserva.apellido,
+              expression: "reserva.apellido"
             }
           ],
           attrs: { type: "text" },
-          domProps: { value: _vm.apellido },
+          domProps: { value: _vm.reserva.apellido },
           on: {
             input: function($event) {
               if ($event.target.composing) {
                 return
               }
-              _vm.apellido = $event.target.value
+              _vm.$set(_vm.reserva, "apellido", $event.target.value)
             }
           }
         })
@@ -37754,18 +38692,18 @@ var render = function() {
             {
               name: "model",
               rawName: "v-model",
-              value: _vm.cantidad,
-              expression: "cantidad"
+              value: _vm.reserva.cantidad,
+              expression: "reserva.cantidad"
             }
           ],
           attrs: { type: "number" },
-          domProps: { value: _vm.cantidad },
+          domProps: { value: _vm.reserva.cantidad },
           on: {
             input: function($event) {
               if ($event.target.composing) {
                 return
               }
-              _vm.cantidad = $event.target.value
+              _vm.$set(_vm.reserva, "cantidad", $event.target.value)
             }
           }
         })
@@ -37779,110 +38717,147 @@ var render = function() {
             {
               name: "model",
               rawName: "v-model",
-              value: _vm.fecha,
-              expression: "fecha"
+              value: _vm.reserva.fecha,
+              expression: "reserva.fecha"
             }
           ],
           attrs: { type: "date" },
-          domProps: { value: _vm.fecha },
+          domProps: { value: _vm.reserva.fecha },
           on: {
             input: function($event) {
               if ($event.target.composing) {
                 return
               }
-              _vm.fecha = $event.target.value
+              _vm.$set(_vm.reserva, "fecha", $event.target.value)
             }
           }
         })
       ]),
       _vm._v(" "),
-      _c("button", { staticClass: "btn btn-info btn-block mt-3" }, [
-        _vm._v(" Buscar Asientos")
-      ]),
+      _c(
+        "button",
+        {
+          staticClass: "btn btn-info btn-block mt-3",
+          on: {
+            click: function($event) {
+              return _vm.buscarAsientos()
+            }
+          }
+        },
+        [_vm._v(" Buscar Asientos")]
+      ),
       _vm._v(" "),
       _vm._l(_vm.filas, function(n) {
-        return [
-          _c(
-            "div",
-            {
-              staticClass: "d-flex flex-row justify-content-between mb-3 mt-3"
-            },
-            [
-              _vm._l(_vm.columnas, function(i) {
-                return [
-                  _c("div", {}, [
-                    _c("label", { staticClass: "super-happy" }, [
-                      _c("input", {
-                        directives: [
-                          {
-                            name: "model",
-                            rawName: "v-model",
-                            value: _vm.butacas,
-                            expression: "butacas"
-                          }
-                        ],
-                        staticClass: "super-happy",
-                        attrs: { type: "checkbox" },
-                        domProps: {
-                          checked: Array.isArray(_vm.butacas)
-                            ? _vm._i(_vm.butacas, null) > -1
-                            : _vm.butacas
-                        },
-                        on: {
-                          change: function($event) {
-                            var $$a = _vm.butacas,
-                              $$el = $event.target,
-                              $$c = $$el.checked ? true : false
-                            if (Array.isArray($$a)) {
-                              var $$v = null,
-                                $$i = _vm._i($$a, $$v)
-                              if ($$el.checked) {
-                                $$i < 0 && (_vm.butacas = $$a.concat([$$v]))
-                              } else {
-                                $$i > -1 &&
-                                  (_vm.butacas = $$a
-                                    .slice(0, $$i)
-                                    .concat($$a.slice($$i + 1)))
+        return _vm.verButacas
+          ? [
+              _c(
+                "div",
+                {
+                  staticClass:
+                    "d-flex flex-row justify-content-between mb-3 mt-3"
+                },
+                [
+                  _vm._l(_vm.columnas, function(i) {
+                    return [
+                      _c("div", {}, [
+                        _c("label", { staticClass: "super-happy" }, [
+                          _c("input", {
+                            directives: [
+                              {
+                                name: "model",
+                                rawName: "v-model",
+                                value: _vm.reserva.butacas,
+                                expression: "reserva.butacas"
                               }
-                            } else {
-                              _vm.butacas = $$c
-                            }
-                          }
-                        }
-                      }),
-                      _vm._v(" "),
-                      _c(
-                        "svg",
-                        {
-                          staticClass: "asiento",
-                          attrs: {
-                            "enable-background": "new 0 0 512.522 512.522",
-                            viewBox: "0 0 512.522 512.522",
-                            xmlns: "http://www.w3.org/2000/svg"
-                          }
-                        },
-                        [
-                          _c("path", {
+                            ],
+                            staticClass: "super-happy",
                             attrs: {
-                              d:
-                                "m407.664 211.714-13.941-85.31c-.667-4.088-4.512-6.861-8.611-6.192-4.088.668-6.86 4.523-6.191 8.611l12.437 76.102c-63.451-12.539-129.991-15.76-197.809-9.548-4.125.378-7.163 4.028-6.785 8.153.378 4.124 4.036 7.165 8.152 6.785 66.933-6.13 132.56-2.896 195.06 9.616 10.575 2.117 18.251 11.527 18.251 22.375v23.666c0 12.592-10.244 22.836-22.836 22.836h-258.259c-12.592 0-22.836-10.244-22.836-22.836v-23.198c0-11.007 7.847-20.452 18.656-22.458 13.32-2.472 26.883-4.636 40.312-6.432 4.105-.549 6.988-4.322 6.439-8.428s-4.324-6.991-8.428-6.439c-13.679 1.829-27.493 4.033-41.06 6.551h-.001l21.091-129.681c5.739-35.281 35.846-60.887 71.589-60.887h85.787c35.716 0 65.819 25.583 71.579 60.832l3.467 21.211c.667 4.087 4.518 6.858 8.611 6.192 4.088-.668 6.86-4.524 6.191-8.612l-3.467-21.21c-3.345-20.473-13.893-39.146-29.7-52.58-15.806-13.435-35.937-20.833-56.681-20.833h-85.787c-20.757 0-40.896 7.406-56.707 20.854s-26.354 32.137-29.686 52.624l-22.686 139.487c-8.917 6.986-14.519 17.84-14.519 29.808v23.198c0 20.863 16.973 37.836 37.836 37.836h5.669l-29.245 192.741c-.608 4.006.558 8.066 3.199 11.139s6.481 4.835 10.533 4.835h7.449c6.18 0 11.525-3.976 13.303-9.894l46.575-155.031 17.1-10.594h109.09l17.1 10.594 7.559 25.161c.976 3.248 3.954 5.344 7.18 5.344.715 0 1.441-.103 2.161-.319 3.967-1.191 6.217-5.374 5.024-9.34l-19.418-64.636h34.137l29.393 193.715h-5.333l-29.582-98.468c-1.191-3.968-5.372-6.216-9.341-5.025-3.967 1.192-6.217 5.374-5.024 9.341l29.819 99.259c1.777 5.917 7.123 9.894 13.303 9.894h7.449c4.052 0 7.892-1.762 10.533-4.835s3.808-7.133 3.199-11.139l-29.245-192.741h5.669c20.863 0 37.836-16.973 37.836-37.836v-23.666c.002-12.385-6.051-23.639-15.56-30.592zm-283.752 285.808h-5.333l29.393-193.715h34.137zm197.481-171.606-2.844-1.762c-2.273-1.408-4.887-2.152-7.56-2.152h-109.457c-2.673 0-5.286.744-7.562 2.153l-2.842 1.76 6.642-22.109h116.979z"
+                              type: "checkbox",
+                              disabled: _vm.findArray(
+                                _vm.butacasReservadas,
+                                i + "-" + n
+                              )
+                            },
+                            domProps: {
+                              value: i + "-" + n,
+                              checked: Array.isArray(_vm.reserva.butacas)
+                                ? _vm._i(_vm.reserva.butacas, i + "-" + n) > -1
+                                : _vm.reserva.butacas
+                            },
+                            on: {
+                              change: function($event) {
+                                var $$a = _vm.reserva.butacas,
+                                  $$el = $event.target,
+                                  $$c = $$el.checked ? true : false
+                                if (Array.isArray($$a)) {
+                                  var $$v = i + "-" + n,
+                                    $$i = _vm._i($$a, $$v)
+                                  if ($$el.checked) {
+                                    $$i < 0 &&
+                                      _vm.$set(
+                                        _vm.reserva,
+                                        "butacas",
+                                        $$a.concat([$$v])
+                                      )
+                                  } else {
+                                    $$i > -1 &&
+                                      _vm.$set(
+                                        _vm.reserva,
+                                        "butacas",
+                                        $$a
+                                          .slice(0, $$i)
+                                          .concat($$a.slice($$i + 1))
+                                      )
+                                  }
+                                } else {
+                                  _vm.$set(_vm.reserva, "butacas", $$c)
+                                }
+                              }
                             }
-                          })
-                        ]
-                      )
-                    ])
-                  ])
-                ]
-              })
-            ],
-            2
-          )
-        ]
+                          }),
+                          _vm._v(" "),
+                          _c(
+                            "svg",
+                            {
+                              staticClass: "asiento",
+                              attrs: {
+                                "enable-background": "new 0 0 512.522 512.522",
+                                viewBox: "0 0 512.522 512.522",
+                                xmlns: "http://www.w3.org/2000/svg"
+                              }
+                            },
+                            [
+                              _c("path", {
+                                attrs: {
+                                  d:
+                                    "m407.664 211.714-13.941-85.31c-.667-4.088-4.512-6.861-8.611-6.192-4.088.668-6.86 4.523-6.191 8.611l12.437 76.102c-63.451-12.539-129.991-15.76-197.809-9.548-4.125.378-7.163 4.028-6.785 8.153.378 4.124 4.036 7.165 8.152 6.785 66.933-6.13 132.56-2.896 195.06 9.616 10.575 2.117 18.251 11.527 18.251 22.375v23.666c0 12.592-10.244 22.836-22.836 22.836h-258.259c-12.592 0-22.836-10.244-22.836-22.836v-23.198c0-11.007 7.847-20.452 18.656-22.458 13.32-2.472 26.883-4.636 40.312-6.432 4.105-.549 6.988-4.322 6.439-8.428s-4.324-6.991-8.428-6.439c-13.679 1.829-27.493 4.033-41.06 6.551h-.001l21.091-129.681c5.739-35.281 35.846-60.887 71.589-60.887h85.787c35.716 0 65.819 25.583 71.579 60.832l3.467 21.211c.667 4.087 4.518 6.858 8.611 6.192 4.088-.668 6.86-4.524 6.191-8.612l-3.467-21.21c-3.345-20.473-13.893-39.146-29.7-52.58-15.806-13.435-35.937-20.833-56.681-20.833h-85.787c-20.757 0-40.896 7.406-56.707 20.854s-26.354 32.137-29.686 52.624l-22.686 139.487c-8.917 6.986-14.519 17.84-14.519 29.808v23.198c0 20.863 16.973 37.836 37.836 37.836h5.669l-29.245 192.741c-.608 4.006.558 8.066 3.199 11.139s6.481 4.835 10.533 4.835h7.449c6.18 0 11.525-3.976 13.303-9.894l46.575-155.031 17.1-10.594h109.09l17.1 10.594 7.559 25.161c.976 3.248 3.954 5.344 7.18 5.344.715 0 1.441-.103 2.161-.319 3.967-1.191 6.217-5.374 5.024-9.34l-19.418-64.636h34.137l29.393 193.715h-5.333l-29.582-98.468c-1.191-3.968-5.372-6.216-9.341-5.025-3.967 1.192-6.217 5.374-5.024 9.341l29.819 99.259c1.777 5.917 7.123 9.894 13.303 9.894h7.449c4.052 0 7.892-1.762 10.533-4.835s3.808-7.133 3.199-11.139l-29.245-192.741h5.669c20.863 0 37.836-16.973 37.836-37.836v-23.666c.002-12.385-6.051-23.639-15.56-30.592zm-283.752 285.808h-5.333l29.393-193.715h34.137zm197.481-171.606-2.844-1.762c-2.273-1.408-4.887-2.152-7.56-2.152h-109.457c-2.673 0-5.286.744-7.562 2.153l-2.842 1.76 6.642-22.109h116.979z"
+                                }
+                              })
+                            ]
+                          )
+                        ])
+                      ])
+                    ]
+                  })
+                ],
+                2
+              )
+            ]
+          : _vm._e()
       }),
       _vm._v(" "),
-      _c("button", { staticClass: "btn btn-success btn-block mt-3" }, [
-        _vm._v(" Confirmar Reserva")
-      ])
+      _c(
+        "button",
+        {
+          staticClass: "btn btn-success btn-block mt-3",
+          on: {
+            click: function($event) {
+              return _vm.guardarReserva()
+            }
+          }
+        },
+        [_vm._v(" Confirmar Reserva")]
+      )
     ],
     2
   )

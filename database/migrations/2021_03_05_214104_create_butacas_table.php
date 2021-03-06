@@ -17,7 +17,7 @@ class CreateButacasTable extends Migration
             $table->id();
             $table->integer('fila');
             $table->integer('columna');
-            $table->foreignId('id_reserva')->references('id')->on('reservas');
+            $table->foreignId('reserva_id')->references('id')->on('reservas');
             $table->timestamps();
         });
     }

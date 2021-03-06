@@ -17,4 +17,5 @@ Route::get('/', function () {
     return view('welcome');
 });
 
+Route::get('/buscarAsientos', 'ReservaController@search');
 Route::resource('/reserva', 'ReservaController');

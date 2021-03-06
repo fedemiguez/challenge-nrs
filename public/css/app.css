@@ -11014,13 +11014,12 @@ input + svg {
 }
 
 input[class=super-happy]:hover + svg,
-input[class=super-happy]:checked + svg,
-input[class=super-happy]:focus + svg {
+input[class=super-happy]:checked + svg {
   fill: #006dd9;
 }
 
 input[class=super-happy]:disabled + svg {
-  fill: red;
+  fill: #d61515;
 }
 
 .asiento {
