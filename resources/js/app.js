@@ -5,7 +5,6 @@
  */
 
 require('./bootstrap');
-
 window.Vue = require('vue');
 
 /**
@@ -16,17 +15,27 @@ window.Vue = require('vue');
  * Eg. ./components/ExampleComponent.vue -> <example-component></example-component>
  */
 
-// const files = require.context('./', true, /\.vue$/i)
-// files.keys().map(key => Vue.component(key.split('/').pop().split('.')[0], files(key).default))
-
-Vue.component('body-component', require('./components/BodyComponent.vue').default);
+const files = require.context('./', true, /\.vue$/i)
+files.keys().map(key => Vue.component(key.split('/').pop().split('.')[0], files(key).default))
 
 /**
  * Next, we will create a fresh Vue application instance and attach it to
  * the page. Then, you may begin adding components to this application
  * or customize the JavaScript scaffolding to fit your unique needs.
  */
-
+ import moment from "moment";
+ moment.locale("es");
 const app = new Vue({
     el: '#app',
+    data: {
+        menu : 0,
+        reserva:{
+            nombre:'',
+            apellido:'',
+            cantidad:'',
+            fecha_reserva:moment().format('Y-MM-DD'),
+            butacas:[],
+            edit : false,
+        }
+    },
 });

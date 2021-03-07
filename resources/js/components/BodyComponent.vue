@@ -9,14 +9,29 @@
                                 Reserva tu Butaca Para el Teatro
                             </div>
                             <div class="col-4">
-                                <button class="btn btn-success  float-right">
-                                    Ver Reservas
-                                </button>
+                                <template v-if="this.$root.menu === 0">
+                                    <button class="btn btn-success  float-right" @click="cambiarVista(1)">
+                                        Ver Reservas
+                                    </button>
+                                </template>
+
+                                <template v-else>
+                                    <button class="btn btn-success  float-right" @click="cambiarVista(0)">
+                                        Crear Reserva
+                                    </button>
+                                </template>
                             </div>
                         </div>
                     </div>
                     <div class="card-body">
-                        <reserva></reserva>
+                        <template v-if="this.$root.menu === 0">
+                            <crear-reserva-component 
+                                :reserva="this.$root.reserva"
+                            />
+                        </template>
+                        <template v-else>
+                            <listar-reserva-component></listar-reserva-component>
+                        </template>
                     </div>
                 </div>
             </div>
@@ -25,10 +40,32 @@
 </template>
 
 <script>
-    import reserva from './ReservaComponent'
+    import CrearReservaComponent from './CrearReservaComponent.vue'
+    import ListarReservaComponent from './ListarReservaComponent.vue'
+    import moment from "moment";
+    moment.locale("es");
     export default {
-        components:{
-            reserva
+        components: {
+            CrearReservaComponent,
+            ListarReservaComponent,
+        },
+        name:'body-component',
+        data(){
+            return{
+            }
+        },
+        methods:{
+            cambiarVista(n){
+                this.$root.menu = n;
+                this.$root.reserva = {
+                    nombre:'',
+                    apellido:'',
+                    cantidad:'',
+                    fecha_reserva:moment().format('Y-MM-DD'),
+                    butacas:[],
+                    edit : false,
+                }
+            },
         }
     }
 </script>

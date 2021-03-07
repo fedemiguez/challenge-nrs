@@ -14,7 +14,7 @@
         </section>
         <section class="mt-2">
             <label>Selecciona la Fecha de la Reserva : </label>
-            <input type="date" v-model="reserva.fecha" />
+            <input type="date" v-model="reserva.fecha_reserva" />
         </section>
         <button class="btn btn-info btn-block mt-3" @click="buscarAsientos()"> Buscar Asientos</button>
 
@@ -31,37 +31,32 @@
                 </template>
             </div>
         </template>
-
-        <button class="btn btn-success btn-block mt-3" @click="guardarReserva()"> Confirmar Reserva</button>
-
-
+        <template v-if="reserva.edit">                
+            <button class="btn btn-success btn-block mt-3" @click="actualizarReserva()"> Actualizar Reserva</button>        
+        </template>
+        <template v-else>
+            <button class="btn btn-success btn-block mt-3" @click="guardarReserva()"> Crear Reserva</button>        
+        </template>
     </div>
 </template>
 
-<script>import Axios from "axios";
-
-
+<script>
+import printError from '../printErrors'
 export default {
-    name: 'reserva',
+    name: 'crear-reserva-component',
+    props: ['reserva'],
     data(){
         return{
             filas : 5,
             columnas : 10,
             verButacas:false,
             butacasReservadas:[],
-            reserva:{
-                nombre:'',
-                apellido:'',
-                cantidad:'',
-                fecha:'',
-                butacas:[]
-            }
         }
     },
     methods: {
         buscarAsientos: async function () {
             let me = this;
-            var url = `/buscarAsientos?fecha=${me.reserva.fecha}&cantidad=${me.reserva.cantidad}`;
+            var url = `/buscarAsientos?fecha=${me.reserva.fecha_reserva}&cantidad=${me.reserva.cantidad}&edit=${me.reserva.edit}&id=${me.reserva.id}`;
             try{
                 let response =  await axios.get(url);
                 let respuesta = response.data;
@@ -70,11 +65,17 @@ export default {
                         me.butacasReservadas.push(`${butaca.columna}-${butaca.fila}`);
                     });
                 });
+                if(me.reserva.edit){
+                    me.reserva.butacas.forEach(element =>{
+                        me.butacasReservadas = me.butacasReservadas.filter( butaca => {
+                            return butaca !== element
+                        })
+                    })
+                }
                 me.verButacas = true;
             }catch(error) {                
-                this.printError(error)
+                printError(error)
             };
-            return this.availabilityMessage;
         },
         guardarReserva : async function(){
             let me = this;
@@ -84,36 +85,52 @@ export default {
                     'nombre' : this.reserva.nombre,
                     'apellido' : this.reserva.apellido,
                     'cantidad' : this.reserva.cantidad,
-                    'fecha_reserva' : this.reserva.fecha,
+                    'fecha_reserva' : this.reserva.fecha_reserva,
                     'butacas' : this.reserva.butacas
                 });
                 alert('Reserva realizada con exito');
                 this.limpiarCampos()
             } catch (error) {
-                this.printError(error)
+                printError(error)
+            }
+        },
+        actualizarReserva : async function(){
+            let me = this;
+            const url = `/reserva/${this.reserva.id}`;
+            try {
+                let response =  await axios.put(url, {
+                    'nombre' : this.reserva.nombre,
+                    'apellido' : this.reserva.apellido,
+                    'cantidad' : this.reserva.cantidad,
+                    'fecha_reserva' : this.reserva.fecha_reserva,
+                    'butacas' : this.reserva.butacas
+                });
+                alert('Reserva actualizada con exito');
+                this.limpiarCampos()
+            } catch (error) {
+                printError(error)
             }
         },
         findArray(arr, value){
             var res = arr.find(element => element === value);
             return res;
         },
-        printError(error){
-            var errors = Object.values(error.response.data.errors);
-            errors.forEach(element => {
-                alert(element) 
-            });
-        },
         limpiarCampos(){
             this.verButacas=false,
             this.butacasReservadas=[],
-            this.reserva={
+            this.$root.reserva={
                 nombre:'',
                 apellido:'',
                 cantidad:'',
                 fecha:'',
                 butacas:[]
             }
+        },
+    },
+    mounted() {
+        if(this.reserva.edit){
+            this.buscarAsientos()
         }
-    }
+    },
 }
 </script>

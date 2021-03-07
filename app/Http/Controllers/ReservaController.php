@@ -14,9 +14,18 @@ class ReservaController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
-        $reservas = Reserva::paginate(15);
+        $reservas = Reserva::query()->with('butacas');
+        if($request->fecha){
+            $reservas->where('fecha_reserva', $request->fecha);
+        }
+
+        if($request->apellido){
+            $reservas->where('apellido', 'LIKE', '%'.$request->apellido.'%');
+        }
+
+        $reservas = $reservas->paginate(4);
         return response()->json(['reservas' => $reservas], 200);
     }
 
@@ -36,10 +45,15 @@ class ReservaController extends Controller
 
         if($reservas){
             $cantidadReservada = $reservas->sum('cantidad');
-            if($cantidadReservada + $request->cantidad <= 50){
+            $cantidadTotal =  $cantidadReservada + $request->cantidad;
+            if($request->edit === 'true'){
+                $reserva = Reserva::find($request->id);
+                $cantidadTotal = $cantidadTotal - $request->cantidad - $reserva->cantidad;
+            }
+            if($cantidadTotal <= 50){
                 return response()->json(['reservas' => $reservas], 200);
             }else{
-                return response()->json(['errors' => ['No queda mas lugar para esa fecha']], 409);
+                return response()->json(['errors' => ["Los asientos disponibles para la fecha son :". (50 - $cantidadReservada)]], 409);
             }
         }
     }
@@ -124,7 +138,38 @@ class ReservaController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        $messages = [
+            'butacas.required' => 'Seleccione al menos 1 butaca.',
+            'butacas.max' => 'La cantidad de butacas seleccionadas es mayor a la cantidad de personas ingresadas',
+            'butacas.min' => 'La cantidad de butacas seleccionadas es menor a la cantidad de personas ingresadas'
+        ];
+        $request->validate([
+            'nombre' => 'required',
+            'apellido' => 'required',
+            'fecha_reserva' => 'required|date',
+            'cantidad' => 'required|integer',
+            'butacas' => "required|array|max:$request->cantidad|min:$request->cantidad"
+        ], $messages);
+        try {
+			DB::beginTransaction();
+            $reserva = Reserva::find($id);
+            $reserva->fill($request->all());
+            $reserva->butacas()->delete();
+            $reserva->save();
+            foreach($request->butacas as $butaca){
+                $butacaExplode = explode('-', $butaca);
+                Butaca::create([
+                    'reserva_id' => $reserva->id,
+                    'columna' => $butacaExplode[0],
+                    'fila' => $butacaExplode[1],
+                ]);
+            }
+            DB::commit();
+            return response()->json(['reserva' => $reserva], 200);
+        }
+        catch(Exception $e){
+            DB::rollBack();
+        }
     }
 
     /**
@@ -135,6 +180,16 @@ class ReservaController extends Controller
      */
     public function destroy($id)
     {
-        //
+        try {
+			DB::beginTransaction();
+            $reserva = Reserva::find($id);
+            $reserva->butacas()->delete();
+            $reserva->delete();
+            DB::commit();
+            return response()->json(['reserva' => 'Eliminado con exito'], 200);
+        }
+        catch(Exception $e){
+            DB::rollBack();
+        }
     }
 }
