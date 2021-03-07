@@ -11,6 +11,6 @@
             <div id="app" class="content">
                 <body-component/>
             </div>
-        <script src="{{asset('js/app.js')}}"></script>
+        <script src="{{asset('js/app.js?ver=1.0')}}"></script>
     </body>
 </html>
