@@ -99,6 +99,8 @@ class ReservaController extends Controller
                     'fila' => $butacaExplode[1],
                 ]);
             }
+            $reserva->butacas;
+            \Log::info($reserva);
             DB::commit();
             return response()->json(['reserva' => $reserva], 200);
         }
